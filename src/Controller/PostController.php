@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -16,7 +17,7 @@ class PostController extends Controller
     
     public function index() 
     {
-        // return new Response('Hello!');
+        $posts = $this->getDoctrine()->getRepository(Post::Class)->findAll();
 
         return $this->render('posts/index.html.twig');
     }

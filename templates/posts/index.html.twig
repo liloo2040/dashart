@@ -1,9 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-Dashboard Posts
-{% endblock %}
+{% block title %}Dashboard Posts{% endblock %}
 
 {% block body %}
-    <h1>Posts</h1>
+    {% if posts %}
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th>Post Actions</th>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts%}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td><a href="/posts/{{ post.id }}" class="btn btn-dark">Show</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No posts to display.</p>
+    {% endif %} 
 {% endblock %}
