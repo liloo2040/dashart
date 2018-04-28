@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-Dashboard Posts
-{% endblock %}
+{% block title %}Dashboard Posts{% endblock %}
 
 {% block body %}
-    <h1>Posts</h1>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <hr>
+    <a href="/">Go Back</a>
 {% endblock %}

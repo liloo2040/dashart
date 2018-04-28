@@ -17,17 +17,19 @@ class PostController extends Controller
     
     public function index() 
     {
-        $posts = $this->getDoctrine()->getRepository(Post::Class)->findAll();
+        $posts = $this->getDoctrine()->getRepository(Post::class)->findAll();
 
         return $this->render('posts/index.html.twig', array('posts' => $posts));
     }
 
     /**
-     * @Route("/post/show/{id}", name="post_show")
+     * @Route("/post/{id}", name="post_show")
      */
     public function show($id) 
     {
-
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
+        
+        return $this->render('posts/show.html.twig', array('post' => $post));
     }
 
 //    /**
