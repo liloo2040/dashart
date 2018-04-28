@@ -4,7 +4,7 @@
 
 {% block body %}
     {% if posts %}
-    <table class="table table-stripped">
+    <table id="posts" class="table table-stripped">
         <thead>
             <tr>
                 <th>Post Actions</th>
@@ -15,7 +15,10 @@
             {% for post in posts%}
                 <tr>
                     <td>{{ post.title }}</td>
-                    <td><a href="/post/{{ post.id }}" class="btn btn-dark">Show</a></td>
+                    <td><a href="/post/{{ post.id }}" class="btn btn-dark">Show</a>
+                    <a href="/post/edit/{{ post.id }}" class="btn btn-light">Edit</a>
+                    <a href="#" class="btn btn-danger delete-post" data-id="{{ post.id }}">Delete</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -23,4 +26,8 @@
     {% else %}
         <p>No posts to display.</p>
     {% endif %} 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/main.js"></script>
 {% endblock %}

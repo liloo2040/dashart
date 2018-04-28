@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class PostController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="posts_home")
      * @Method({"GET"})
      */
     
@@ -46,11 +46,53 @@ class PostController extends Controller
                 'attr' => array('class' => 'btn btn-primary mt-3' )
                 ))
             ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $post =$form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+        return $this->redirectToRoute('posts_home');
+        }
 
         return $this->render('posts/new.html.twig', array(
             'form' => $form->createView()
         ));
     }
+
+    /**
+     * @Route("/post/edit/{id}", name="edit_post")
+     * Method({"GET", "POST"})
+     */
+    public function edit(Request $request, $id)
+    {
+        $post = new Post();
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
+        $form = $this->createFormBuilder($post)
+            ->add('title', TextType::class, array('attr' => 
+            array('class' => 'form-control')))
+            ->add('content', TextareaType::class, array(
+                'required' => false, 
+                'attr' => array('class' => 'form-control')))
+            ->add('save', SubmitType::class, array(
+                'label' => 'Edit',
+                'attr' => array('class' => 'btn btn-primary mt-3' )
+                ))
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+        return $this->redirectToRoute('posts_home');
+        }
+
+        return $this->render('posts/edit.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
     /**
      * @Route("/post/{id}", name="post_show")
      */
@@ -59,6 +101,22 @@ class PostController extends Controller
         $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
 
         return $this->render('posts/show.html.twig', array('post' => $post));
+    }
+
+    /**
+     * @Route("/post/delete/{id}")
+     * @Method({"DELETE"})
+     */
+    public function delete(Request $request, $id)
+    {
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($post);
+        $entityManager->flush();
+
+        $reponse = new Response();
+        $reponse->send();
     }
 
 
