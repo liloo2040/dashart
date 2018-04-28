@@ -29,16 +29,6 @@ class PostController extends Controller
     }
 
     /**
-     * @Route("/post/{id}", name="post_show")
-     */
-    public function show($id) 
-    {
-        $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
-
-        return $this->render('posts/show.html.twig', array('post' => $post));
-    }
-
-    /**
      * @Route("/post/new", name="new_post")
      * Method({"GET", "POST"})
      */
@@ -57,10 +47,20 @@ class PostController extends Controller
                 ))
             ->getForm();
 
-        return $this->render('posts/new;html.twig', array(
+        return $this->render('posts/new.html.twig', array(
             'form' => $form->createView()
         ));
     }
+    /**
+     * @Route("/post/{id}", name="post_show")
+     */
+    public function show($id) 
+    {
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
+
+        return $this->render('posts/show.html.twig', array('post' => $post));
+    }
+
 
 //    /**
 //      * @Route("/post/save")
